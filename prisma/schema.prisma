@@ -11,11 +11,9 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String  @id @default(cuid())
   createdAt DateTime @default(now())
-  userName     String   @unique
-  password      String
-  token         String
-  
+  userName  String   @unique
+  password  String
+  token     String?
 }
-  
