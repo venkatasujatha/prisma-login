@@ -1,7 +1,5 @@
 const router = require('express').Router();
+const userController =require('../controller/controller')
 
-router.get('/', async (req, res, next) => {
-  res.send({ message: 'Ok api is working 🚀' });
-});
-
+router.post('/save',userController.add)
 module.exports = router;
