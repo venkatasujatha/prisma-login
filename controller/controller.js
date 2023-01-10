@@ -163,14 +163,14 @@ const emailSend = async (req, res) => {
 const sgmail = require('@sendgrid/mail');
 
 const sendForgotPasswordMail =async(req,res)=>{
-  const API_KEY = "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"
+  const API_KEY = "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"
   sgmail.setApiKey(API_KEY);
 
 const msg = {
 
-    to:"thanu123valluru@gmail.com",
+    to:"pranavimalempati2000@gmail.com",
 
-    from:"thanu123valluru@gmail.com",
+    from:"pranavimalempati2000@gmail.com",
 
     subject:"sending token for forgot password",
 
