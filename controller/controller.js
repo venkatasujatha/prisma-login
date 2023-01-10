@@ -136,13 +136,12 @@ const emailSend = async (req, res) => {
           email: String(user.email),
         },
         data: {
-          email: user.email,
           forgetToken: user.forgetToken,
         },
       });
       res.status(200).json({
         status:appConst.status.success,
-        message: null,
+        message: resp,
       });
     }
     else{
@@ -161,4 +160,32 @@ const emailSend = async (req, res) => {
     });
   }
 };
-module.exports = { add, login, session,emailSend };
+const sgmail = require('@sendgrid/mail');
+
+const sendForgotPasswordMail =async(req,res)=>{
+  const API_KEY = "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"
+  sgmail.setApiKey(API_KEY);
+
+const msg = {
+
+    to:"thanu123valluru@gmail.com",
+
+    from:"thanu123valluru@gmail.com",
+
+    subject:"sending token for forgot password",
+
+    text:`reset password by clicking on below link
+   `,
+
+    html:`<h1> change password : ${req.body.forgotToken}</h1>`,
+
+};
+
+sgmail.send(msg)
+
+.then((response)=>console.log('Email sent...'))
+
+.catch((error)=> console.log(error.msg))
+}
+
+module.exports = { add, login, session,emailSend, sendForgotPasswordMail};

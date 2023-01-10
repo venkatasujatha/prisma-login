@@ -4,5 +4,6 @@ const userController =require('../controller/controller')
 router.post('/save',userController.add);
 router.post('/login',userController.login);
 router.get("/session",userController.session)
-router.post('/post',userController.emailSend)
+router.post('/post',userController.emailSend);
+router.post('/sendMail',userController.sendForgotPasswordMail)
 module.exports = router;
