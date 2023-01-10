@@ -29,6 +29,7 @@ const add = async (req, res) => {
 const login = async (req, res) => {
   try {
     let user = JSON.parse(JSON.stringify(req.body.user));
+    console.log("user",user)
 
     // const { userName, password } = req.body;
 
@@ -38,7 +39,6 @@ const login = async (req, res) => {
       },
     });
 
-    console.log(find_user.password);
 
     console.log(user.password);
 
