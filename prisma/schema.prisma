@@ -15,5 +15,5 @@ model User {
   createdAt DateTime @default(now())
   userName  String   @unique
   password  String
-  token     String?
+  token     String
 }

@@ -97,6 +97,23 @@ const login = async (req, res) => {
   }
 };
 
+const session = async(req,res)=>{
+  try {
+      if (req.session.views) {
+           req.session.views++
+          res.write(`
+  <p> Session expires after 1 min of in activity: `
+  + (req.session.cookie.expires) + '</p>')
+          res.end()
+      } else {
+          req.session.views = 1
+          res.end(' New session is started')
+      }
+  } catch (error) {
+      res.send(error.message)
+      
+  }
+}
 
 
-module.exports = { add,login};
+module.exports = { add,login,session};
