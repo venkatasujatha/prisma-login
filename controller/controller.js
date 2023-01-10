@@ -1,7 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
-const jwt =require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const prisma = new PrismaClient();
+const appConst = require("../appConstants");
 //post
 const add = async (req, res) => {
   try {
@@ -14,14 +15,16 @@ const add = async (req, res) => {
     });
     //res.json(user);
     res.status(200).json({
-      message: "record inserted successfully",
+      status: appConst.status.success,
+      message: null,
       Response: user,
     });
   } catch (error) {
     console.log(error);
     res.status(400).json({
-      message: "record not inserted successfully",
-      Response: error.message,
+      status: appConst.status.fail,
+      response: null,
+      message: error.message,
     });
   }
 };
@@ -29,7 +32,7 @@ const add = async (req, res) => {
 const login = async (req, res) => {
   try {
     let user = JSON.parse(JSON.stringify(req.body.user));
-    console.log("user",user)
+    console.log("user", user);
 
     // const { userName, password } = req.body;
 
@@ -38,7 +41,6 @@ const login = async (req, res) => {
         userName: String(user.userName),
       },
     });
-
 
     console.log(user.password);
 
@@ -53,42 +55,37 @@ const login = async (req, res) => {
         console.log(user.token);
 
         const resp = await prisma.user.update({
-          where:{
-            userName: String(user.userName)
+          where: {
+            userName: String(user.userName),
           },
-          data:{
-            userName:user.userName,
-            password:find_user.password,
-            token:user.token}
-          });
+          data: {
+            userName: user.userName,
+            password: find_user.password,
+            token: user.token,
+          },
+        });
 
-       
         res.status(200).json({
-          status: "success",
+          status: appConst.status.success,
           response: find_user,
-          message: "you have logged in successfully",
+          message: null,
         });
       } else {
         res.status(401).json({
-          status: "failed!..",
-
+          status: appConst.status.in_correct,
           response: null,
-
-          message: "incorrect password",
         });
       }
     } else {
       res.status(401).json({
-        status: "failed!..",
+        status: appConst.status.in_correct_userName,
 
         response: null,
-
-        message: "incorrect or invalid username",
       });
     }
   } catch (error) {
     res.status(400).json({
-      status: "failed",
+      status: appConst.status.fail,
 
       response: null,
 
@@ -98,23 +95,24 @@ const login = async (req, res) => {
 };
 
 //session expiration
-const session = async(req,res)=>{
+const session = async (req, res) => {
   try {
-      if (req.session.views) {
-           req.session.views++
-          res.write(`
-  <p> Session expires after 1 min of in activity: `
-  + (req.session.cookie.expires) + '</p>')
-          res.end()
-      } else {
-          req.session.views = 1
-          res.end(' New session is started')
-      }
+    if (req.session.views) {
+      req.session.views++;
+      res.write(
+        `
+  <p> Session expires after 1 min of in activity: ` +
+          req.session.cookie.expires +
+          "</p>"
+      );
+      res.end();
+    } else {
+      req.session.views = 1;
+      res.end(" New session is started");
+    }
   } catch (error) {
-      res.send(error.message)
-      
+    res.send(error.message);
   }
-}
+};
 
-
-module.exports = { add,login,session};
+module.exports = { add, login, session };

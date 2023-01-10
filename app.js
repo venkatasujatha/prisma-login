@@ -3,7 +3,6 @@ const createError = require('http-errors');
 const morgan = require('morgan');
 require('dotenv').config();
 const session = require('express-session')
-
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
