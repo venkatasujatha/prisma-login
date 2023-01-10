@@ -12,7 +12,7 @@ const router =require('./routes/api.route')
 
 app.use(
   session({
-       secret: "hello world",
+       secret: process.env.secret_key,
       resave: true,
       saveUninitialized: false,
       cookie: {
