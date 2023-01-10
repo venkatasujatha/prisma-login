@@ -4,8 +4,11 @@ CREATE TABLE `User` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `userName` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `token` VARCHAR(191) NULL,
+    `token` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `forgetToken` VARCHAR(191) NULL,
 
     UNIQUE INDEX `User_userName_key`(`userName`),
+    UNIQUE INDEX `User_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

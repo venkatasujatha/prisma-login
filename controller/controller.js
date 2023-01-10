@@ -115,4 +115,50 @@ const session = async (req, res) => {
   }
 };
 
-module.exports = { add, login, session };
+const emailSend = async (req, res) => {
+  let user = JSON.parse(JSON.stringify(req.body.user));
+  console.log("user", user);
+
+  try {
+
+    const find_user = await prisma.user.findUnique({
+      where: {
+        email: String(user.email),
+      },
+    });
+    console.log("user",find_user)
+    if(find_user)
+    {
+      user.forgetToken = jwt.sign({ email: find_user.email },process.env.secretKey);
+      console.log("forgetToken",user.forgetToken)
+      const resp = await prisma.user.update({
+        where: {
+          email: String(user.email),
+        },
+        data: {
+          email: user.email,
+          forgetToken: user.forgetToken,
+        },
+      });
+      res.status(200).json({
+        status:appConst.status.success,
+        message: null,
+      });
+    }
+    else{
+      console.log("user not exists");
+      res.status(400).json({
+        status:appConst.status.fail,
+        message: null,
+      });
+    }
+   
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({
+      status:appConst.status.fail,
+      message: error.message,
+    });
+  }
+};
+module.exports = { add, login, session,emailSend };
